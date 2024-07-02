@@ -27,6 +27,10 @@ Route::group([
     Route::get('logout',[ApiController::class, 'logout']);
 });
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 Route::apiResource('users', UserController::class);
 Route::apiResource('raw-materials', RawMaterialController::class);
 Route::apiResource('warehouses', WarehouseController::class);

@@ -23,6 +23,7 @@ class RecipeController extends Controller
                 'ingredient_groups' => $recipe->ingredientGroups->map(function ($ingredientGroup) {
                     return [
                         'ingredient_name' => $ingredientGroup->ingredient->name,
+                        'code' => $ingredientGroup->ingredient->code,
                         'quantity' => $ingredientGroup->quantity,
                         'unit' => $ingredientGroup->ingredient->unit
                     ];
@@ -51,9 +52,17 @@ class RecipeController extends Controller
                         'name' => $recipe->name,
                         'category' => $recipe->category,
                         'target' => $recipe->target,
-                        'bread_groups' => $recipe->breadGroups->pluck('bread.name'),
+                        'bread_groups' => $recipe->breadGroups->map(function ($breadGroup) {
+                            return [
+                                'product_id' => $breadGroup->bread->id,
+                                'bread_name' => $breadGroup->bread->name,
+
+                            ];
+                        }),
                         'ingredients' => $recipe->ingredientGroups->map(function ($ingredientGroup) {
                             return [
+                                'raw_materials_id' => $ingredientGroup->ingredient->id,
+                                'code' => $ingredientGroup->ingredient->code,
                                 'ingredient_name' => $ingredientGroup->ingredient->name,
                                 'quantity' => $ingredientGroup->quantity,
                                 'unit' => $ingredientGroup->ingredient->unit,
@@ -146,6 +155,7 @@ class RecipeController extends Controller
 
         return response()->json(['message' => 'Target updated successfully', 'recipe' => $recipe]);
     }
+
     public function updateName(Request $request, $id)
     {
         $validatedData = $request->validate([

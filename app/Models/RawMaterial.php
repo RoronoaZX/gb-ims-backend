@@ -27,7 +27,7 @@ class RawMaterial extends Model
 
     public function rawMaterialGroups()
     {
-        return $this->hasMany(IngredientGroups::class, 'ingredient_id');
+        return $this->hasMany(IngredientGroup::class, 'ingredient_id');
     }
 
     public function scopeRawMaterials($query)
