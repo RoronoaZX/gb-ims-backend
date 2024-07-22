@@ -8,29 +8,32 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('branch_employees', function (Blueprint $table) {
+        Schema::create('initial_bakerreports', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->time('time_shift');
+            $table->bigInteger('recipe_id')->unsigned();
+            $table->foreign('recipe_id')->references('id')->on('recipes');
+            $table->string('recipe_category');
+            $table->string('status');
+            $table->integer('kilo');
+            $table->integer('short');
+            $table->integer('over');
+            $table->integer('actual_target');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('branch_employees');
+        Schema::dropIfExists('initial_bakerreports');
     }
 };

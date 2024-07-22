@@ -17,8 +17,6 @@ class BranchProductController extends Controller
     public function getProducts($branchId)
     {
         $branchProducts = BranchProduct::where('branches_id', $branchId)->with(['branch', 'product'])->get();
-
-
         return response()->json($branchProducts, 200);
     }
 
@@ -32,6 +30,8 @@ class BranchProductController extends Controller
             'product_id' => 'required|exists:products,id',
             'category' => 'required|string|max:255',
             'price' => 'required|numeric',
+            'beginnings' => 'required|numeric',
+            'total_quantity' => 'required|numeric',
         ]);
 
         $existingBranchProduct = BranchProduct::where('branches_id', $validatedData['branches_id'])->where('product_id', $validatedData['product_id'])->first();
@@ -46,7 +46,9 @@ class BranchProductController extends Controller
             'branches_id' => $validatedData['branches_id'],
             'product_id' =>$validatedData['product_id'],
             'category' =>$validatedData['category'],
-            'price' => $validatedData['price']
+            'price' => $validatedData['price'],
+            'beginnings' => $validatedData['beginnings'],
+            'total_quantity' => $validatedData['total_quantity']
         ]);
 
         return response()->json([

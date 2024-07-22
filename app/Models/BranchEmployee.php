@@ -15,4 +15,14 @@ class BranchEmployee extends Model
         'time_shift',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id', 'id');
+    }
+
+    public function scopeByBranch($query, $branchId)
+    {
+        return $query->where('branch_id', $branchId);
+    }
+
 }

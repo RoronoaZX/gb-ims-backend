@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BranchProductController;
+use App\Http\Controllers\BranchRawMaterialsReportController;
+use App\Http\Controllers\InitialBakerReportController;
+use App\Http\Controllers\InitialBakerreportsController;
+use App\Http\Controllers\SalesReportsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +29,8 @@ Route::group([
 
     //
     Route::get('logout',[ApiController::class, 'logout']);
+
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -37,14 +43,28 @@ Route::apiResource('warehouses', WarehouseController::class);
 Route::apiResource('branches', BranchController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('recipes', RecipeController::class);
-Route::get('search-recipes',[ RecipeController::class, 'searchRecipe']);
+Route::apiResource('branch-raw-materials', BranchRawMaterialsReportController::class);
+Route::apiResource('initial-baker-report', InitialBakerreportsController::class);
+Route::apiResource('branch-products', BranchProductController::class);
+Route::apiResource('sales-report', SalesReportsController::class);
+
+Route::post('confirm-initial-baker-report/{id}', [InitialBakerreportsController::class, 'confirmReport']);
+Route::post('decline-initial-baker-report/{id}', [InitialBakerreportsController::class, 'declineReport']);
+Route::post('search-branches-by-id', [BranchProductController::class, 'searchBranchId' ]);
+Route::post('search-user', [UserController::class, 'searchUser' ]);
+
 Route::put('update-name/{id}', [RecipeController::class, 'updateName']);
 Route::put('update-target/{id}', [RecipeController::class, 'updateTarget']);
-Route::get('bread-products', [ProductController::class, 'fetchBreadProducts']);
-Route::get('ingredients',[ RawMaterialController::class, 'fetchRawMaterialsIngredients']);
-Route::apiResource('branch-products', BranchProductController::class);
-Route::post('search-branches-by-id', [BranchProductController::class, 'searchBranchId' ]);
 Route::put('update-branch-products/{id}', [BranchProductController::class, 'updatePrice' ]);
+
+Route::get('get-bread-production', [InitialBakerreportsController::class, 'getInitialReportsData']);
+Route::get('branch/{branchId}/rawMaterials',[ BranchRawMaterialsReportController::class, 'getRawMaterials']);
+Route::get('branch/{branchId}/bakerDoughReport',[ InitialBakerreportsController::class, 'fetchDoughReports']);
+Route::get('branch/{userId}/bakerReport',[ InitialBakerreportsController::class, 'getReportsByUserId']);
+Route::get('ingredients',[ RawMaterialController::class, 'fetchRawMaterialsIngredients']);
+Route::get('bread-products', [ProductController::class, 'fetchBreadProducts']);
+Route::get('search-recipes',[ RecipeController::class, 'searchRecipe']);
 Route::get('branches/{branchId}/products', [BranchProductController::class, 'getProducts']);
 Route::get('search-products', [ProductController::class, 'searchProducts']);
+Route::get('search-rawMaterials', [RawMaterialController::class, 'searchRawMaterials']);
 

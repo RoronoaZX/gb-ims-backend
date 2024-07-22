@@ -11,9 +11,12 @@ class BakerReports extends Model
     protected $fillable = [
         'branch_id',
         'user_id',
-        'baker_report_id',
-        'sales_report_id',
-        'branch_raw_material_report_id',
-        'expences_report_id'
+        'recipe_id',
+        'recipe_category',
+        'status',
+        'kilo',
+        'short',
+        'over',
+        'actual_target'
     ];
 }

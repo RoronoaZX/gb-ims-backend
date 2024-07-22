@@ -17,7 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('branch_id')->references('id')->on('branches');
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('recipe_id')->references('id')->on('recipes');
+            $table->string('recipe_category')->nullable();
             $table->string('status')->nullable();
+            $table->integer('kilo')->nullable();
+            $table->integer('short')->nullable();
+            $table->integer('over')->nullable();
+            $table->integer('actual_target')->nullable();
             $table->timestamps();
         });
     }

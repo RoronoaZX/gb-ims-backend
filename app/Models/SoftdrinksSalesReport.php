@@ -15,10 +15,16 @@ class SoftdrinksSalesReport extends Model
         'product_id',
         'sales_report_id',
         'beginnings',
-        'remaining_stocks',
+        'remaining',
         'price',
-        'softdrinks_sold',
+        'sold',
+        'out',
         'sales',
-        'branch_softdrinks_added_stocks',
+        'added_stocks',
     ];
+
+    public function salesReports()
+    {
+        return $this->belongsTo(SalesReports::class, 'sales_report_id');
+    }
 }

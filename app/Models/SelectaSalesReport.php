@@ -15,10 +15,16 @@ class SelectaSalesReport extends Model
         'product_id',
         'sales_report_id',
         'beginnings',
-        'remaining_stocks',
+        'remaining',
         'price',
-        'selecta_sold',
+        'sold',
+        'out',
         'sales',
-        'branch_selecta_added_stocks',
+        'added_stocks',
     ];
+
+    public function salesReports()
+    {
+        return $this->belongsTo(SalesReports::class, 'sales_report_id');
+    }
 }

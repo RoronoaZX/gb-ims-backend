@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('branch_raw_materials_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('branch_id')->references('id')->on('branches');
-            $table->foreignId('recipe_id')->references('id')->on('recipes');
-            $table->foreignId('baker_report_id')->references('id')->on('baker_reports');
-            $table->foreignId('ingredient_id')->references('id')->on('products');
+            // $table->foreignId('recipe_id')->references('id')->on('recipes');
+            // $table->foreignId('baker_report_id')->references('id')->on('baker_reports');
+            $table->foreignId('ingredients_id')->references('id')->on('products');
+            $table->integer('total_quantity')->nullable();
             $table->timestamps();
         });
     }

@@ -17,4 +17,9 @@ class ExpencesReport extends Model
         'amount',
         'description',
     ];
+
+    public function salesReports()
+    {
+        return $this->belongsTo(SalesReports::class, 'sales_report_id');
+    }
 }

@@ -40,6 +40,17 @@ class User extends Authenticatable
 
     }
 
+    public function branchEmployee()
+    {
+        return $this->hasOne(BranchEmployee::class, 'user_id','id');
+    }
+
+    public function salesReports()
+    {
+        return $this->hasMany(SalesReports::class);
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -58,4 +69,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 }

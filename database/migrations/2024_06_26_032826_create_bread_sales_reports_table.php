@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('branch_id')->references('id')->on('branches');
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('product_id')->references('id')->on('products');
+            $table->foreignId('bread_id')->references('id')->on('products');
             $table->foreignId('sales_report_id')->references('id')->on('sales_reports');
             $table->integer('beginnings');
             $table->integer('new_production');

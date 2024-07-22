@@ -14,8 +14,17 @@ class BranchRawMaterialsReportController extends Controller
      */
     public function index()
     {
-        //
+        $branchRawMaterials = BranchRawMaterialsReport::with('ingredients')->get();
+        return $branchRawMaterials;
     }
+
+    public function getRawMaterials($branchId)
+    {
+        $branchRawMaterials = BranchRawMaterialsReport::where('branch_id', $branchId)->with(['branch', 'ingredients'])->get();
+
+        return response()->json($branchRawMaterials, 200);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +44,30 @@ class BranchRawMaterialsReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'branch_id' => 'required|exists:branches,id',
+            'ingredients_id' => 'required|exists:products,id',
+            'total_quantity' => 'required|numeric',
+        ]);
+
+        $existingBranchRawMaterials = BranchRawMaterialsReport::where('branch_id', $validatedData['branch_id'])->where('ingredients_id', $validatedData['ingredients_id'])->first();
+
+        if ($existingBranchRawMaterials) {
+            return response()->json([
+                'message' => 'The RawMaterials already exists in this branch.'
+            ]);
+        }
+
+        $branchRawMaterials = BranchRawMaterialsReport::create([
+            'branch_id' => $validatedData['branch_id'],
+            'ingredients_id' => $validatedData['ingredients_id'],
+            'total_quantity' => $validatedData['total_quantity'],
+        ]);
+
+        return response()->json([
+            'message' => "Branch Raw Materials saved successfully",
+            'data' => $branchRawMaterials
+        ], 201);
     }
 
     /**

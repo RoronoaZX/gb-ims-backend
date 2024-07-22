@@ -35,4 +35,9 @@ class Branch extends Model
     {
         return $this->hasMany(BranchProduct::class,'branches_id','id');
     }
+
+    public function salesReports()
+    {
+        return $this->hasMany(SalesReports::class);
+    }
 }

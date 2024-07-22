@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('branch_id')->references('id')->on('branches');
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('baker_report_id')->references('id')->on('baker_reports');
+            $table->integer('products_total_sales')->nullable();
+            $table->integer('expenses_total')->nullable();
+            $table->integer('denomination_total')->nullable();
+            $table->integer('charges_amount')->nullable();
             $table->timestamps();
         });
     }

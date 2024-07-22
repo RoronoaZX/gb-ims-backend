@@ -41,4 +41,9 @@ class RawMaterial extends Model
                      ->orWhere('code', 'LIKE', "%{$keyword}%")
                      ->orWhere('category', 'LIKE', "%{$keyword}%");
     }
+
+    public function branch_rawMaterials()
+    {
+        return $this->hasMany(BranchRawMaterialsReport::class, 'branch_id');
+    }
 }
