@@ -193,9 +193,10 @@ public function store(Request $request)
             ->first();
 
         if ($branchProduct) {
-            $existingBeginnings = $branchProduct->beginnings;
-            $branchProduct->total_quantity = $existingBeginnings + $breadReport->bread_production;
+            $existingTotalQuantity = $branchProduct->total_quantity;
+
             $branchProduct->new_production = $breadReport->bread_production;
+            $branchProduct->total_quantity = $existingTotalQuantity + $branchProduct->new_production;
             $branchProduct->save();
         }
             }

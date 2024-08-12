@@ -14,7 +14,7 @@ class BranchRawMaterialsReportController extends Controller
      */
     public function index()
     {
-        $branchRawMaterials = BranchRawMaterialsReport::with('ingredients')->get();
+        $branchRawMaterials = BranchRawMaterialsReport::orderBy('created_at', 'desc')->with('ingredients')->get();
         return $branchRawMaterials;
     }
 
@@ -70,48 +70,32 @@ class BranchRawMaterialsReportController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\BranchRawMaterialsReport  $branchRawMaterialsReport
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BranchRawMaterialsReport $branchRawMaterialsReport)
+    public function updateStocks(Request $request, $id)
     {
-        //
+        $validateData = $request->validate([
+            'total_quantity' => 'required|integer'
+        ]);
+        $branchRawMaterials = BranchRawMaterialsReport::findorFail($id);
+        $branchRawMaterials->total_quantity = $validateData['total_quantity'];
+        $branchRawMaterials->save();
+
+        return response()->json(['message' => 'Stocks updated successfully', 'total_quantity' => $branchRawMaterials]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BranchRawMaterialsReport  $branchRawMaterialsReport
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BranchRawMaterialsReport $branchRawMaterialsReport)
+    public function destroy($id)
     {
-        //
-    }
+        $branchRawMaterials = BranchRawMaterialsReport::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BranchRawMaterialsReport  $branchRawMaterialsReport
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, BranchRawMaterialsReport $branchRawMaterialsReport)
-    {
-        //
-    }
+        if (!$branchRawMaterials) {
+            return response()->json([
+                'message' => 'Raw materials not found'
+            ], 404);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\BranchRawMaterialsReport  $branchRawMaterialsReport
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(BranchRawMaterialsReport $branchRawMaterialsReport)
-    {
-        //
+        $branchRawMaterials->delete();
+        return response()->json([
+            'message' => 'Raw materials deleted successfully'
+        ]);
+
     }
 }

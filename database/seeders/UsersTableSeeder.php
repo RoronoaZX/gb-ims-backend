@@ -20,8 +20,8 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('password'),
             'birthdate' => '1990-01-01',
             'address' => '123 Example St, City',
-            'sex' => 'male',
-            'status' => 'active',
+            'sex' => 'Male',
+            'status' => 'Current',
             'phone' => '1234567890',
             'role' => 'Admin',
         ]);

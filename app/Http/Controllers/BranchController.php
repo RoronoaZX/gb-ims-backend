@@ -10,7 +10,7 @@ class BranchController extends Controller
 {
     public function index()
     {
-        $branches = Branch::with('warehouse')->get();
+        $branches = Branch::orderBy('created_at', 'desc')->with('warehouse')->get();
 
         return response()->json($branches, 200);
     }

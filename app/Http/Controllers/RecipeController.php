@@ -11,7 +11,7 @@ class RecipeController extends Controller
 {
     public function index()
     {
-        $recipes = Recipe::with(['breadGroups.bread', 'ingredientGroups.ingredient'])->get();
+        $recipes = Recipe::orderBy('created_at', 'desc')->with(['breadGroups.bread', 'ingredientGroups.ingredient'])->get();
 
         $formattedRecipes = $recipes->map(function ($recipe) {
             return [

@@ -59,8 +59,9 @@ class ApiController extends Controller
          ]);
 
          return response()->json([
-            'status' => true,
+            // 'status' => true,
             'message' => 'User created successfully',
+            'data' => $user,
             'token' => $user->createToken('API TOKEN')->plainTextToken
          ], 200);
 
@@ -136,5 +137,25 @@ class ApiController extends Controller
             'data' => [],
 
          ], 200);
+    }
+
+    public function refreshToken(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $user->tokens()->delete(); // Revoke old tokens
+            $newToken = $user->createToken('API TOKEN')->plainTextToken;
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Token refreshed successfully',
+                'token' => $newToken,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }

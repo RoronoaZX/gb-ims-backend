@@ -9,7 +9,7 @@ class WarehouseController extends Controller
 {
     public function index()
     {
-        $warehouse = Warehouse::all();
+        $warehouse = Warehouse::orderBy('created_at', 'desc')->get();
         return  $warehouse;
     }
 

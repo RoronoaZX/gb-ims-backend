@@ -16,7 +16,7 @@ class BranchProductController extends Controller
 
     public function getProducts($branchId)
     {
-        $branchProducts = BranchProduct::where('branches_id', $branchId)->with(['branch', 'product'])->get();
+        $branchProducts = BranchProduct::orderBy('created_at', 'desc')->where('branches_id', $branchId)->with(['branch', 'product'])->get();
         return response()->json($branchProducts, 200);
     }
 
@@ -75,6 +75,18 @@ class BranchProductController extends Controller
         return response()->json(['message' => 'Price updated successfully', 'price' => $branchProduct]);
     }
 
+    public function updateTotatQuatity(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'total_quantity' => 'required|integer'
+        ]);
+        $branchProduct = BranchProduct::findOrFail($id);
+        $branchProduct->total_quantity = $validatedData['total_quantity'];
+        $branchProduct->save();
+
+        return response()->json(['message' => 'Total Quantity updated successfully', 'total quantity' => $branchProduct]);
+    }
+
     public function destroy($id)
     {
         $branchProduct = BranchProduct::find($id);
@@ -91,5 +103,7 @@ class BranchProductController extends Controller
         ]);
 
     }
+
+
 
 }

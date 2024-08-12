@@ -10,7 +10,7 @@ class RawMaterialController extends Controller
     public function index()
     {
 
-        $raw_materials = RawMaterial::all();
+        $raw_materials = RawMaterial::orderBy('created_at', 'desc')->get();
         return  $raw_materials;
     }
 

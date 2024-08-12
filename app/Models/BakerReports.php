@@ -19,4 +19,5 @@ class BakerReports extends Model
         'over',
         'actual_target'
     ];
+
 }

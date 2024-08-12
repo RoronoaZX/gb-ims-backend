@@ -62,8 +62,5 @@ class InitialBakerreports extends Model
         {
             return $this->hasMany(BreadProductionReport::class, 'initial_bakerreports_id');
         }
-        public function salesReports()
-        {
-            return $this->hasMany(SalesReports::class);
-        }
+
 }
