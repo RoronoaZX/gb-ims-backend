@@ -11,18 +11,28 @@ class Warehouse extends Model
     protected $fillable = [
         'name',
         'location',
-        'person_incharge',
+        'employee_id',
         'phone',
         'status',
     ];
+
+    public function employee()
+    {
+        return $this->hasMany(Employee::class);
+    }
 
     public function branches() {
         return $this->hasMany(Branch::class);
     }
 
-    public function scopeSearch($query, $keyword)
+    public function warehouseEmployee()
     {
-        return $query->where('name', 'LIKE', "%{$keyword}%")->orWhere('person_incharge','LIKE', "%{$keyword}%");
+        return $this->hasMany(WarehouseEmployee::class);
     }
+
+    // public function scopeSearch($query, $keyword)
+    // {
+    //     return $query->where('name', 'LIKE', "%{$keyword}%")->orWhere('person_incharge','LIKE', "%{$keyword}%");
+    // }
 
 }

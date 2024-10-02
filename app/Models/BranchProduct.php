@@ -28,7 +28,7 @@ class BranchProduct extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function branches_products()
+    public function branch_products()
     {
         return $this->belongsToMany(Product::class, 'branches_products', 'branches_id', 'product_id')->withPivot('price');
     }

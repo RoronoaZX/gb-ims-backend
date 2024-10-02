@@ -37,4 +37,9 @@ class BreadProductionReport extends Model
     {
         return $this->belongsTo(InitialBakerreports::class, 'initial_bakerreports_id');
     }
+
+    public function bread()
+    {
+        return $this->belongsTo(Product::class, 'bread_id', 'id');
+    }
 }

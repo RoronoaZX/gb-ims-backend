@@ -25,15 +25,20 @@ class SalesReportsController extends Controller
         $validator = Validator::make($request->all(), [
             'branch_id' => 'required|integer|exists:branches,id',
             'user_id' => 'required|integer|exists:users,id',
-            'denomination_total' => 'required|integer',
-            'expenses_total' => 'required|integer',
-            'products_total_sales' => 'required|integer',
-            'charges_amount' => 'required|integer',
+            'denomination_total' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'expenses_total' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'products_total_sales' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'charges_amount' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'over_total' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'credit_total' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
             'breadReports' => 'required|array',
             'selectaReports' => 'required|array',
             'softdrinksReports' => 'required|array',
             'expensesReports' => 'required|array',
             'denominationReports' => 'required|array',
+            'creditReports' => 'required|array',
+            'creditReports.*.credits' => 'required|array',
+
 
         ]);
 
@@ -48,6 +53,8 @@ class SalesReportsController extends Controller
             'expenses_total' => $request->expenses_total,
             'products_total_sales' => $request->products_total_sales,
             'charges_amount' => $request->charges_amount,
+            'over_total' => $request->over_total,
+            'credit_total' => $request->credit_total,
         ]);
 
         foreach ($request->breadReports as $breadReport) {
@@ -102,12 +109,32 @@ class SalesReportsController extends Controller
 
         // Store Denomination Reports
         foreach ($request->denominationReports as $denominationReport) {
+            foreach ($denominationReport as $key => $value) {
+                if (is_string($value)) {
+                    $denominationReport[$key] = (int)str_replace(',', '', $value);
+                }
+            }
             $salesReport->denominationReports()->create($denominationReport);
         }
 
-        return response()->json(['message' => 'Sales report created successfully', 'salesReport' => $salesReport], 201);
+            // Loop through each creditReport entry
+        foreach ($request->creditReports as $creditReportData) {
+            // Store each Credit Report
+            $creditReports = $salesReport->creditReports()->create([
+                'credit_user_id' => $creditReportData['credit_user_id'],
+                'total_amount' => $creditReportData['total_amount'],
+                'branch_id' => $creditReportData['branch_id'],
+                'user_id' => $creditReportData['user_id'],
+            ]);
 
+            // Store each Credit within the Credit Report
+            foreach ($creditReportData['credits'] as $credit) {
+                $credit['credit_user_id'] = $creditReportData['credit_user_id'];
+                $creditReports->creditProducts()->create($credit);
+            }
+        }
     }
+
 
     public function show(SalesReports $salesReports)
     {

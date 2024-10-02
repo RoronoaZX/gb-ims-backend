@@ -19,6 +19,7 @@ class RecipeController extends Controller
                 'name' => $recipe->name,
                 'category' => $recipe->category,
                 'target' => $recipe->target,
+                'status' => $recipe->status,
                 'bread_groups' => $recipe->breadGroups->pluck('bread.name'),
                 'ingredient_groups' => $recipe->ingredientGroups->map(function ($ingredientGroup) {
                     return [
@@ -81,6 +82,7 @@ class RecipeController extends Controller
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:30',
             'target' => 'required|integer',
+            'status' => 'required|string|max:30',
             'breads' => 'required|array',
             'breads.*.bread_id' => 'required|integer|exists:products,id',
             'ingredients' => 'required|array',
@@ -167,5 +169,17 @@ class RecipeController extends Controller
         $recipe->save();
 
         return response()->json(['message' => 'Name updated successfully', 'recipe' => $recipe]);
+    }
+    public function updateStatus(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+
+        $recipe = Recipe::findOrFail($id);
+        $recipe->status = $validatedData['status'];
+        $recipe->save();
+
+        return response()->json(['message' => 'Status updated successfully', 'recipe' => $recipe]);
     }
 }

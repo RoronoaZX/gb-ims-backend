@@ -27,12 +27,25 @@ class WarehouseController extends Controller
         return response()->json($results);
     }
 
+    public function fetchWarehouseWithEmployee()
+    {
+        $warehouseWithEmployee = Warehouse::with('warehouseEmployee')->orderBy('name', 'asc')->get();
+        return response()->json($warehouseWithEmployee,200);
+    }
 
     public function store(Request $request)
     {
-        $warehouse = Warehouse::create($request->all());
+        $validateData = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'name' => 'required||unique:warehouses',
+            'location' => 'nullable',
+            'phone' => 'nullable',
+            'status' => 'nullable',
+        ]);
 
-        return response()->json($warehouse);
+        $warehouse = Warehouse::create($validateData);
+
+        return response()->json($warehouse, 201);
     }
 
 

@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Models\BranchProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BranchProductController extends Controller
 {
@@ -105,5 +106,25 @@ class BranchProductController extends Controller
     }
 
 
+    public function searchProducts(Request $request)
+{
+    $branchId = $request->input('branch_id');
+    $keyword = $request->input('keyword');
 
+    Log::info('Search request received', ['branch_id' => $branchId, 'keyword' => $keyword]);
+
+    // Search for products with a join on branch_products to filter by branch_id and keyword
+    $products = Product::with(['branch_products' => function ($query) use ($branchId) {
+        $query->where('branches_id', $branchId);
+    }])
+    ->where('products.name', 'like', '%' . $keyword . '%')
+    ->select('products.*', 'branch_products.price')
+    ->join('branch_products', 'products.id', '=', 'branch_products.product_id')
+    ->where('branch_products.branches_id', $branchId)
+    ->get();
+
+    Log::info('Search results', ['products' => $products]);
+
+    return response()->json($products);
+}
 }

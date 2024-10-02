@@ -11,12 +11,12 @@ class Denomination extends Model
 
     protected $fillable = [
         'sales_report_id',
-        'oneThousands',
-        'fiveHundred',
-        'twoHundred',
-        'oneHundred',
-        'fifty',
-        'twenty',
+        'oneThousandBills',
+        'fiveHundredBills',
+        'twoHundredBills',
+        'oneHundredBills',
+        'fiftyBills',
+        'twentyBills',
         'twentyCoins',
         'tenCoins',
         'fiveCoins',

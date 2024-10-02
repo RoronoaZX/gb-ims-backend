@@ -19,31 +19,29 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email',
+        'employee_id',
         'password',
-        'name',
-        'birthdate',
-        'address',
-        'sex',
-        'status',
-        'phone',
         'role',
 
     ];
 
     public function scopeSearch($query, $keyword)
     {
-        return $query->where('firstname', 'LIKE', "%{$keyword}%")
-                     ->orWhere('middlename', 'LIKE', "%{$keyword}%")
-                     ->orWhere('lastname', 'LIKE', "%{$keyword}%")
+        return $query->where('name', 'LIKE', "%{$keyword}%")
                      ->orWhere('status', 'LIKE', "%{$keyword}%")
                      ->orWhere('role', 'LIKE', "%{$keyword}%");
 
     }
 
-    public function branchEmployee()
+    public function employee()
     {
-        return $this->hasOne(BranchEmployee::class, 'user_id','id');
+        return $this->hasOne(Employee::class, 'id', 'employee_id');
     }
+
+    // public function branchEmployee()
+    // {
+    //     return $this->hasOne(BranchEmployee::class, 'user_id','id');
+    // }
 
     public function salesReports()
     {

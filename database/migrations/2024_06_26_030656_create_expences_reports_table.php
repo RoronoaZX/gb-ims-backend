@@ -18,8 +18,9 @@ return new class extends Migration
             $table->foreignId('sales_report_id')->references('id')->on('sales_reports');
             $table->foreignId('branch_id')->references('id')->on('branches');
             $table->foreignId('user_id')->references('id')->on('users');
+            // $table->foreignId('expense_user_id')->references('id')->on('users');
             $table->string('name')->nullable();
-            $table->integer('amount')->nullable();
+            $table->decimal('amount',10,2)->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });

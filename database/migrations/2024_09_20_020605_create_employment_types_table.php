@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recipes', function (Blueprint $table) {
+        Schema::create('employment_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 191)->unique();
-            $table->string('category');
-            $table->integer('target');
-            $table->string('status');
+            $table->string('category')->nullable();
+            $table->decimal('salary', 10, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recipes');
+        Schema::dropIfExists('employment_types');
     }
 };

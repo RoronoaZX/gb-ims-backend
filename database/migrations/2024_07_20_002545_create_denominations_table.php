@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('sales_report_id')->unsigned();
             $table->foreign('sales_report_id')->references('id')->on('sales_reports');
-            $table->integer('oneThousands')->default(0)->nullable();
-            $table->integer('fiveHundred')->default(0)->nullable();
-            $table->integer('twoHundred')->default(0)->nullable();
-            $table->integer('oneHundred')->default(0)->nullable();
-            $table->integer('fifty')->default(0)->nullable();
-            $table->integer('twenty')->default(0)->nullable();
-            $table->integer('twentyCoins')->default(0)->nullable();
-            $table->integer('tenCoins')->default(0)->nullable();
-            $table->integer('fiveCoins')->default(0)->nullable();
-            $table->integer('oneCoins')->default(0)->nullable();
-            $table->integer('twentyFiveCents')->default(0)->nullable();
+            $table->integer('oneThousandBills')->nullable();
+            $table->integer('fiveHundredBills')->nullable();
+            $table->integer('twoHundredBills')->nullable();
+            $table->integer('oneHundredBills')->nullable();
+            $table->integer('fiftyBills')->nullable();
+            $table->integer('twentyBills')->nullable();
+            $table->integer('twentyCoins')->nullable();
+            $table->integer('tenCoins')->nullable();
+            $table->integer('fiveCoins')->nullable();
+            $table->integer('oneCoins')->nullable();
+            $table->integer('twentyFiveCents')->nullable();
             $table->timestamps();
         });
     }

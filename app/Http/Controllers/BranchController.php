@@ -22,11 +22,17 @@ class BranchController extends Controller
         return response()->json($branch );
     }
 
+    public function fetchBranchWithEmployee()
+    {
+        $brancWithEmployee = Branch::with('branchEmployee')->orderBy('name', 'asc')->get();
+        return response()->json($brancWithEmployee, 200);
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'warehouse_id' => 'required|exists:warehouses,id',
-            'person_incharge' => 'required',
+            'employee_id' => 'required|exists:employees,id',
             'name' => 'required||unique:branches',
             'location' => 'nullable',
             'phone' => 'nullable',

@@ -18,18 +18,10 @@ class ApiController extends Controller
         try {
             $validateUser = Validator::make($request->all(),
          [
+            'employee_id' => 'required|exists:employees,id',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'birthdate' => 'required|date',
-            'sex' => 'required|string|in:Male,Female',
-            'status' => 'required|string|in:Current,Former',
-            'phone' => 'required|string|max:25',
             'role' => 'required|string|max:255',
-            'branch_id' => 'required|integer',
-            'time_shift' => 'required|date_format:h:i A',
-
          ]);
 
          if ($validateUser->fails()) {
@@ -41,22 +33,17 @@ class ApiController extends Controller
          }
 
          $user = User::create([
+           'employee_id' => $request->employee_id,
            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'name' => $request->name,
-            'address' => $request->address,
-            'birthdate' => $request->birthdate,
-            'sex' => $request->sex,
-            'status' => $request->status,
-            'phone' => $request->phone,
             'role' => $request->role,
          ]);
 
-         $branchEmployee = BranchEmployee::create([
-            'branch_id' => $request->branch_id,
-            'user_id' => $user->id,
-            'time_shift' => date('H:i:s', strtotime( $request->time_shift))
-         ]);
+        //  $branchEmployee = BranchEmployee::create([
+        //     'branch_id' => $request->branch_id,
+        //     'user_id' => $user->id,
+        //     'time_shift' => date('H:i:s', strtotime( $request->time_shift))
+        //  ]);
 
          return response()->json([
             // 'status' => true,
@@ -118,7 +105,7 @@ class ApiController extends Controller
     public function profile()
     {
         // $user = auth()->user();
-        $userData = User::where('id',auth()->user()->id)->with('branchEmployee')->first();
+        $userData = User::where('id',auth()->user()->id)->with('employee.branchEmployee')->first();
         // $userData = $user->load('branchEmployee');
         return response()->json([
             'status' => true,
@@ -158,4 +145,76 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function updateUser(Request $request, $userId)
+{
+    try {
+        // Validate the incoming request
+        $validateUser = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'birthdate' => 'required|date',
+            'sex' => 'required|string|in:Male,Female',
+            'status' => 'required|string|in:Current,Former',
+            'phone' => 'required|string|max:25',
+            'role' => 'required|string|max:255',
+            'branch_id' => 'required|integer',
+            'time_shift' => 'required|date_format:h:i A',
+        ]);
+
+        if ($validateUser->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
+        }
+
+        // Find the user or return a 404 response if not found
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Update the User model fields
+        $user->name = $request->name;
+        $user->address = $request->address;
+        $user->birthdate = $request->birthdate;
+        $user->sex = $request->sex;
+        $user->status = $request->status;
+        $user->phone = $request->phone;
+        $user->role = $request->role;
+        $user->save();
+
+        // Find the associated BranchEmployee
+        $branchEmployee = BranchEmployee::where('user_id', $userId)->first();
+        if (!$branchEmployee) {
+            return response()->json([
+                'status' => false,
+                'message' => 'BranchEmployee not found for the specified user'
+            ], 404);
+        }
+
+        // Update the BranchEmployee model fields
+        $branchEmployee->branch_id = $request->branch_id;
+        $branchEmployee->time_shift = date('H:i:s', strtotime($request->time_shift));
+        $branchEmployee->save();
+
+        // Return a successful response
+        return response()->json([
+            'status' => true,
+            'message' => 'User profile and branch employee details updated successfully',
+            'data' => $user
+        ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th->getMessage(),
+        ], 500);
+    }
+}
 }

@@ -60,7 +60,7 @@ class InitialBakerreports extends Model
         }
         public function breadProductionReports()
         {
-            return $this->hasMany(BreadProductionReport::class, 'initial_bakerreports_id');
+            return $this->hasMany(BreadProductionReport::class, 'initial_bakerreports_id')->with('bread');
         }
 
 }

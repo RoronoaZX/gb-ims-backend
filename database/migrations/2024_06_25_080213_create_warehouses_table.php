@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',191)->unique();
             $table->string('location')->nullable();
-            $table->string('person_incharge')->nullable();
+            $table->foreignId('employee_id')->references('id')->on('employees');
             $table->string('phone')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();

@@ -11,18 +11,23 @@ class BranchEmployee extends Model
 
     protected $fillable = [
         'branch_id',
-        'user_id',
+        'employee_id',
         'time_shift',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id', 'id');
+        return $this->belongsTo(User::class,'employee_id', 'id');
     }
 
     public function scopeByBranch($query, $branchId)
     {
         return $query->where('branch_id', $branchId);
     }
+
+    public function branch()
+{
+    return $this->belongsTo(Branch::class, 'branch_id', 'id');
+}
 
 }

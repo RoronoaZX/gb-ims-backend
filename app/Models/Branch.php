@@ -13,7 +13,7 @@ class Branch extends Model
     use HasFactory;
     protected $fillable = [
         'warehouse_id',
-        'person_incharge',
+        'employee_id',
         'name',
         'location',
         'phone',
@@ -30,7 +30,6 @@ class Branch extends Model
         return $this->belongsToMany(Product::class, 'branches_products', 'branches_id', 'product_id')->withPivot('price');
     }
 
-
     public function branch_products()
     {
         return $this->hasMany(BranchProduct::class,'branches_id','id');
@@ -39,5 +38,10 @@ class Branch extends Model
     public function salesReports()
     {
         return $this->hasMany(SalesReports::class);
+    }
+
+    public function branchEmployee()
+    {
+        return $this->hasMany(BranchEmployee::class);
     }
 }

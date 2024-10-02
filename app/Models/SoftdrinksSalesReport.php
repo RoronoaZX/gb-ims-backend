@@ -27,4 +27,9 @@ class SoftdrinksSalesReport extends Model
     {
         return $this->belongsTo(SalesReports::class, 'sales_report_id');
     }
+
+    public function softdrinks()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

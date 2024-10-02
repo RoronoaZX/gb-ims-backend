@@ -16,7 +16,9 @@ class SalesReports extends Model
         'products_total_sales',
         'expenses_total',
         'denomination_total',
-        'charges_amount'
+        'charges_amount',
+        'over_total',
+        'credit_total'
     ];
 
     public function branch()
@@ -31,17 +33,17 @@ class SalesReports extends Model
 
     public function breadReports()
     {
-        return $this->hasMany(BreadSalesReport::class, 'sales_report_id');
+        return $this->hasMany(BreadSalesReport::class, 'sales_report_id')->with('bread');
     }
 
     public function selectaReports()
     {
-        return $this->hasMany(SelectaSalesReport::class, 'sales_report_id');
+        return $this->hasMany(SelectaSalesReport::class, 'sales_report_id')->with('selecta');
     }
 
     public function softdrinksReports()
     {
-        return $this->hasMany(SoftdrinksSalesReport::class, 'sales_report_id');
+        return $this->hasMany(SoftdrinksSalesReport::class, 'sales_report_id')->with('softdrinks');
     }
 
     public function expensesReports()
@@ -52,6 +54,11 @@ class SalesReports extends Model
     public function denominationReports()
     {
         return $this->hasMany(Denomination::class, 'sales_report_id');
+    }
+
+    public function creditReports()
+    {
+        return $this->hasMany(EmployeeCredits::class, 'sales_report_id')->with('creditProducts', 'creditUserID');
     }
 
 }

@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('warehouse_employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('warehouse_id')->references('id')->on('warehouse');
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('employee_id')->references('id')->on('employees');
             $table->foreignId('raw_materials_id')->references('id')->on('raw_materials');
+            $table->time('time_shift');
             $table->timestamps();
         });
     }

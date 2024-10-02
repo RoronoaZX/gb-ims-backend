@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('employee_id')->unsigned();
+            $table->foreign('employee_id')->references('id')->on('employees');
             $table->time('time_shift');
             $table->timestamps();
         });
